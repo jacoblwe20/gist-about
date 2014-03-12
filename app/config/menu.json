@@ -1,7 +1,10 @@
 {
 	"File" : [
 		"New Gist files.newFile",
-		"Login with Github login",
+		"Login with Github test",
 		"Close _window.close"
+	],
+	"About" : [
+		"This cms.about"
 	]
 }

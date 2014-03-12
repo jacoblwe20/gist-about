@@ -4,14 +4,14 @@
   "window": {
     "title": "node-webkit demo",
     "toolbar": false,
-    "frame": true,
-    "width": 800,
-    "height": 500,
+    "frame": false,
+    "width": 480,
+    "height": 650,
     "position": "mouse",
-    "min_width": 400,
+    "min_width": 480,
     "min_height": 200,
-    "max_width": 800,
-    "max_height": 600
+    "max_width": 480,
+    "max_height": 650
   },
   "dependencies": {
     "request": "~2.34.0"

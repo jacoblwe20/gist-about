@@ -1,14 +1,14 @@
 {
-  "name": "node-webkit",
+  "name": "node-webkit-hello-world",
   "version": "0.0.0",
-  "description": "",
+  "description": "sample app for node webkit",
   "main": "index.js",
   "scripts": {
     "start": "nodewebkit app"
   },
-  "author": "",
-  "license": "BSD-2-Clause",
+  "author": "Jacob Lowe",
+  "license": "MIT",
   "dependencies": {
-    "nodewebkit": "~0.8.5"
+    "nodewebkit": "^0.8.5"
   }
 }
