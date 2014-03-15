@@ -19,10 +19,7 @@ npm-debug.log
 node_modules
 
 # App Modules
-
 app/node_modules
 app/npm-debug.log
 
-# auth
 
-app/config/auth.json

@@ -14,6 +14,11 @@
     "max_height": 650
   },
   "dependencies": {
-    "request": "~2.34.0"
+    "request": "^2.34.0",
+    "github-flavored-markdown": "^1.0.1",
+    "brace": "^0.2.1",
+    "node-syntaxhighlighter": "~0.8.1",
+    "highlight.js": "~8.0.0",
+    "handlebars": "~2.0.0-alpha.2"
   }
 }

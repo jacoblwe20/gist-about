@@ -1,0 +1,7 @@
+span[class^="hljs-"]{
+	display: block;
+}
+
+.hljs-header {
+	color : tomato;
+}

@@ -1,10 +1,13 @@
 {
 	"File" : [
-		"New Gist files.newFile",
-		"Login with Github test",
-		"Close _window.close"
+		"Save gist.save",
+		"Debugger $window.showDevTools",
+		"Minimize $window.minimize",
+		"Close _window.close"	
 	],
-	"About" : [
-		"This cms.about"
+	"Content" : [
+		"Highlight editor.highlight",
+		"Preview editor.preview",
+		"Close Preview editor.closePreview"
 	]
 }

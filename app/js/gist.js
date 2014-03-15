@@ -1,22 +1,26 @@
 var authKey,
 	base = 'https://api.github.com';
 
-try {
-	authKey = require('../config/auth.json').auth
-} catch ( e ) { }
 
 // need to sync ids with a database to
 // allow for us to locally keep track of 
 // users gist create here ~ maybe make a way to
 // sync with exsisting gist
 
-function Gist ( request ) {
-	this._request = request;
+function Gist ( options ) {
+	this._request = options.app.request;
+	this.app = options.app;
+	this.gistFolder = this.app.dataDir + '/gists';
+	try {
+		authKey = require( this.app.dataDir + '/auth.json').authToken
+	} catch ( e ) {
+		console.log('No User Auth Presented')
+	}
 }
 
 Gist.prototype.create = function ( data, callback ) {
 	var options = {
-		form : data,
+		json : data,
 		url : base + '/gists',
 		method : 'post'
 	};
@@ -25,7 +29,7 @@ Gist.prototype.create = function ( data, callback ) {
 
 Gist.prototype.update = function ( data, callback ) {
 	var options = {
-		form : data,
+		json : data,
 		url : base + '/gists/' + data.id,
 		method : 'patch'
 	};
@@ -64,13 +68,98 @@ Gist.prototype.request = function ( options, callback ) {
 	this._request( options, function( err, res, body ) {
 		var resp;
 		if ( err ) return callback ( err );
-		try {
-			resp = JSON.parse( body );
-		} catch ( e ) {
-			return callback ( e );
+		if ( typeof body === 'string' ) {
+			try {
+				resp = JSON.parse( body );
+			} catch ( e ) {
+				return callback ( e );
+			}
+		}
+		if ( typeof body === 'object' ) {
+			resp = body;
 		}
 		callback( null, resp );
-	})
+	});
+};
+
+Gist.prototype.user = function ( callback ) {
+
+	if ( !authKey ) return callback( new Error('No User') );
+
+	var options = {
+		url : base + '/user',
+		method : 'get'
+	};
+	this.request( options, callback);
+};
+
+Gist.prototype.save = function ( callback, progress ) {
+	var fileName = this.app.title.innerText,
+		content = this.app.content.innerText,
+		payload = {
+			files : {}
+		};
+	callback = callback || function(){};
+	payload.files[ fileName ] = {
+		content : content
+	};
+	payload.description = "woot";
+	payload.public = false;
+
+	function done ( err, res ) {
+		if ( err ) return callback ( err );
+		this.app.currentlyEditing = res.id;
+		this.store( res, callback );
+	}
+
+	done = done.bind( this );
+
+	if ( this.app.currentlyEditing ) {
+		// update
+		payload.id = this.app.currentlyEditing;
+		return this.update( payload, done );
+	}
+	this.create( payload, done )
+};
+
+Gist.prototype.store = function ( obj, callback ) {
+	var fs = this.app.fs,
+		json = JSON.stringify( obj, null, '\t' );
+	if ( this.folderExsist() ){
+		fs.writeFile( this.app.dataDir + '/gists/' + obj.id + '.json', json, function ( ) {
+			console.log(arguments);
+		});
+	}
+};
+
+Gist.prototype.getLocal = function ( ) {
+	var fs = this.app.fs,
+		files = fs.readdirSync( this.gistFolder ),
+		payload = [];
+	files.forEach(function( filename ){
+		var content = fs.readFileSync( this.gistFolder + '/' + filename ); 
+		try {
+			content = JSON.parse( content.toString('utf8') );
+		} catch ( e ) { };
+		if ( typeof content !== 'object' ) return;
+		// needs to be expanded to handle multi files
+		for( var key in content.files ) {
+			file = content.files[ key ];
+		}
+		payload.push( file );
+	}.bind( this ));
+	// cache payload
+	// the on and save actions mark as stale an refresh
+	return payload;
+};
+
+Gist.prototype.folderExsist = function ( ) {
+	var exsist = this.app.fs.existsSync( this.gistFolder );
+	if ( exsist ) {
+		return true;
+	}
+	this.app.fs.mkdirSync( this.gistFolder );
+	return true;
 };
 
 module.exports = Gist;
