@@ -1,2 +1,13 @@
-<img src="{{avatar_url}}" />
-<p><a href="{{blog}}">{{name}}</a></p>
+{{#if name}}
+	<img class="user-info-avatar" src="{{avatar_url}}" />
+	<div class="user-info-content">
+		<h5>
+			<a href="{{blog}}">{{name}}</a>
+			<a>Change Key</a>
+		</h5>
+	</div>
+{{else}}
+	<h6>Github Personal Key</h6>
+	<input type="text" class="key" />
+	<button>Add+</button>
+{{/if}}

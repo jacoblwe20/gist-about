@@ -12,6 +12,8 @@
 
 @import url('./ui/highlight.css');
 
+@import url('./ui/list.css');
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -87,6 +89,7 @@ article #editor {
   z-index: 1;
   float: left;
   max-height: auto;
+  white-space: pre;
 }
 
 .preview_content {

@@ -1,16 +1,15 @@
 @import url('./icons.css');
 @import url('./fonts.css');
 /*@import url(http://fonts.googleapis.com/css?family=Andada);*/
-
 :root {
 	var-white: #efefef;
 	var-blue: #1e0fbe;
 	var-grey: #444 ;
 }
-
 @import url('./ui/navigation.css');
 @import url('./ui/scrollbar.css');
 @import url('./ui/highlight.css');
+@import url('./ui/list.css');
 
 * {
 	box-sizing : border-box;
@@ -74,6 +73,7 @@ article #editor{
 	z-index: 1;
 	float: left;
 	max-height: auto;
+	white-space: pre;
 }
 
 .preview_content {

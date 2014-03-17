@@ -4,11 +4,13 @@
   "description": "sample app for node webkit",
   "main": "index.js",
   "scripts": {
-    "start": "nodewebkit app"
+    "start": "node index.js",
+    "postinstall": "cd app; npm install"
   },
   "author": "Jacob Lowe",
   "license": "MIT",
   "dependencies": {
-    "nodewebkit": "^0.8.5"
+    "nodewebkit": "^0.8.5",
+    "myth": "~0.3.1"
   }
 }

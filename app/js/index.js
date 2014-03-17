@@ -1,12 +1,14 @@
 'use strict';
 
-
 var app = {},
 	user;
+
 // basic ui stuff and attaching window
 app._window = this;
 app.gui = require('nw.gui');
 app.config = require('./config/' + ( process.platform || 'linux') + '.json');
+app.storage = localStorage;
+app.state = JSON.parse(localStorage.getItem('state') || '{}');
 app.homeDir = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 app.$window = app.gui.Window.get();
 app.request = require('request');
@@ -24,7 +26,6 @@ app.article = document.querySelector('article');
 app.editor = new ( require('./js/editor') )( app );
 app.templates = new ( require('./js/templates') )({ app : app })
 app.templates.registerHelpers( require('./js/helpers') );
-
 // configure
 var userDataPath = app.homeDir + app.config.userData + '.gist-about',
 	userDataFolder = app.fs.existsSync( userDataPath );
@@ -34,15 +35,36 @@ if ( !userDataFolder ) {
 app.dataDir = userDataPath;
 app.gist = new ( require('./js/gist') )( { app : app } );
 
-// setup menu system
-app.menu = (require('./js/menu')).bind( app );
-app.menu( app.gui );
-app.closeEl.addEventListener('click', function( e ){
-	app._window.close();
-});
+app.open = function ( e ) {
+	var id,
+		file;
 
+	if( typeof e === 'object' ){
+		id = e.dataset.id;
+		file = app.gist.getLocal( id );
+	} else if ( typeof e === 'string' ) {
+		id = e;
+		file = app.gist.getLocal( id );
+	}
 
-app.listEl.addEventListener('click', function( e ){
+	if( file ) {
+		app.state.id = id;
+		app.storage.setItem('state', JSON.stringify(app.state));
+		app.content.innerText = file.content;
+		app.title.innerText = file.filename;
+		app.currentlyEditing = id;
+		app.list.classList.remove('show');
+	}
+};
+
+app.new = function (  ) {
+	app.title.innerText = "NEW.md";
+	app.content.innerText = "## Hello World";
+	app.currentlyEditing = null;
+	app.list.classList.remove('show');
+};
+
+app.openMenu = function ( ) {
 	app.list.classList.toggle('show');
 	// install handlebars and render a template here with data
 	if ( app.user ) {
@@ -52,7 +74,25 @@ app.listEl.addEventListener('click', function( e ){
 		html = app.templates.render('list.hbs', user);
 		app.list.innerHTML = app.templates.render('list.hbs', user);
 	}
+};
+
+// setup menu system
+app.menu = (require('./js/menu')).bind( app );
+app.menu( app.gui );
+app.closeEl.addEventListener('click', function( e ){
+	app._window.close();
 });
+app.shortcuts = new (require('./js/shortcuts'))({
+	app : app,
+	MouseTrap : require('./js/plugins/mousetrap')
+});
+app.shortcuts.register(require('./config/shortcuts.json'));
+
+if ( app.state.id ) {
+	app.open( app.state.id );
+}
+
+app.listEl.addEventListener('click', app.openMenu);
 
 try {
 	user = require( app.dataDir + '/user.json');
@@ -73,3 +113,12 @@ if ( user ) {
 		});
 	});
 }
+
+// this needs to be conditional
+var Gaze = require('gaze').Gaze; 
+var gaze = new Gaze('**/*');
+
+gaze.on('all', function(event, filepath) {
+ if (location)
+   location.reload();
+});

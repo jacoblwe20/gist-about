@@ -132,25 +132,39 @@ Gist.prototype.store = function ( obj, callback ) {
 	}
 };
 
-Gist.prototype.getLocal = function ( ) {
-	var fs = this.app.fs,
-		files = fs.readdirSync( this.gistFolder ),
-		payload = [];
-	files.forEach(function( filename ){
-		var content = fs.readFileSync( this.gistFolder + '/' + filename ); 
-		try {
-			content = JSON.parse( content.toString('utf8') );
-		} catch ( e ) { };
-		if ( typeof content !== 'object' ) return;
-		// needs to be expanded to handle multi files
-		for( var key in content.files ) {
-			file = content.files[ key ];
-		}
-		payload.push( file );
-	}.bind( this ));
-	// cache payload
-	// the on and save actions mark as stale an refresh
-	return payload;
+Gist.prototype.getLocal = function ( id ) { 
+	var fs = this.app.fs;
+	if ( !id ) {
+		var files = fs.readdirSync( this.gistFolder ),
+			payload = [];
+		files.forEach(function( filename ){
+			var file;
+			var content = fs.readFileSync( this.gistFolder + '/' + filename ); 
+			try {
+				content = JSON.parse( content.toString('utf8') );
+			} catch ( e ) { };
+			if ( typeof content !== 'object' ) return;
+			// needs to be expanded to handle multi files
+			for( var key in content.files ) {
+				file = content.files[ key ];
+				file.id = content.id;
+			}
+			payload.push( file );
+		}.bind( this ));
+		// cache payload
+		// the on and save actions mark as stale an refresh
+		return payload;
+	}
+	var file = fs.readFileSync( this.gistFolder + '/' + id + '.json' ),
+		content;
+	try {
+		content = JSON.parse( file.toString('utf8') );
+	} catch ( e ) { };
+	for( var key in content.files ) {
+		file = content.files[ key ];
+		file.id = content.id;
+	}
+	return file;
 };
 
 Gist.prototype.folderExsist = function ( ) {

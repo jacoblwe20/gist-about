@@ -11,7 +11,6 @@ User.prototype.get = function ( ) {
 };
 
 User.prototype.store = function ( ) {
-	console.log('storing');
 	this.attributes.avatar_url = this.avatarCache;
 	var data = JSON.stringify(this.attributes, null, '\t');
 	this.app.fs.writeFile( this.app.dataDir + '/user.json', data, function( err ){
