@@ -1,0 +1,6 @@
+{
+	"mod+p" : "editor.togglePreview",
+	"mod+z" : "editor.undo",
+	"mod+s" : "gist.save",
+	"mod+m" : "openMenu"
+}
