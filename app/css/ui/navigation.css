@@ -42,3 +42,23 @@ nav::after {
 nav .close-button {
 	float: right;
 }
+
+nav .message {
+	position: absolute;
+	padding: 0;
+	top: 0;
+	padding: 15px 0;
+	right: 50px;
+	bottom: 0;
+	font-weight: 700;
+	color: white;
+	background: #aeefc8;
+	max-width: 0;
+	overflow: hidden;
+	transition: max-width .5s, padding .5s;
+}
+
+nav .message.show {
+	padding: 15px 20px;
+	max-width: 300px;
+}

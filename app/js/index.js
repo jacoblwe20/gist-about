@@ -20,6 +20,7 @@ app.Handlebars = require('handlebars');
 app.closeEl = document.querySelector('.icon-cross');
 app.listEl = document.querySelector('.icon-list');
 app.list = document.querySelector('aside');
+app.message = document.querySelector('.message');
 app.content = document.getElementById('editor');
 app.title = document.querySelector('.document-title');
 app.article = document.querySelector('article');
@@ -76,7 +77,66 @@ app.openMenu = function ( ) {
 	}
 };
 
-// setup menu system
+app.listenTo = function ( selector, _event, el, fn ){
+	el.addEventListener( _event, function ( e ) {
+		var target = e.target;
+		// right now only supports tagName
+		if ( target.tagName.toLowerCase() === selector ) {
+			fn( e );
+		}
+	}, false);
+};
+
+app.setMessage = function ( msg ) {
+	var classList = app.message.classList;
+	app.message.innerText = msg;
+	classList.add('show');
+	setTimeout(function(){
+		classList.remove('show');
+	},3000);
+}
+
+app.gist.on('saving', function(){
+	app.setMessage('Saving');
+}.bind(this));
+
+app.gist.on('destroyed', function(){
+	app.setMessage('Removed');
+}.bind(this));
+
+app.gist.on('saved', function(){
+	app.setMessage('Saved');
+}.bind(this));
+
+app.listenTo('i', 'click', app.list, function( e ){
+	e.stopPropagation();
+	var el = e.target,
+		_parent = el.parentNode,
+		id = _parent.dataset.id;
+
+	if ( id ) {
+		if ( confirm('Are you sure you want to delete this note?') ) {
+			app.gist.destroy( id, function(){
+				console.log('removed', arguments );
+				app.openMenu();
+				if( app.currentlyEditing === id ) {
+					app.new();
+				}
+			})
+		}
+	}
+});
+
+app.listenTo('li', 'click', app.list, function( e ){
+	var el = e.target,
+		id = el.dataset.id;
+
+	if ( id ) {
+		app.open( id );
+	}
+});
+
+// menu system
 app.menu = (require('./js/menu')).bind( app );
 app.menu( app.gui );
 app.closeEl.addEventListener('click', function( e ){
@@ -91,6 +151,7 @@ app.shortcuts.register(require('./config/shortcuts.json'));
 if ( app.state.id ) {
 	app.open( app.state.id );
 }
+
 
 app.listEl.addEventListener('click', app.openMenu);
 

@@ -1,3 +1,28 @@
+.user-info {
+	position: relative;
+}
+
+.user-info-avatar {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.user-info-content {
+	position: relative;
+	margin-left: 90px;
+	min-height: 80px;
+}
+
+.user-info-content h5{
+	margin: 0;
+}
+
+.user-info-content a{
+	display: block;
+	margin-bottom: 10px;
+}
+
 .file-list {
 	margin: 0 -20px;
 	padding: 0;
@@ -6,8 +31,23 @@
 
 .file-list li{
 	margin: 0;
-	padding: 10px 20px;
+	padding: 10px 35px 10px 20px;
 	border-bottom: 1px solid white;
+	position: relative;
+	cursor: pointer;
+}
+
+.file-list li i {
+	position: absolute;
+	float: right;
+	top: 11px;
+	right: 10px;
+	opacity: 0;
+	transition : opacity .2s linear .3s;
+}
+
+.file-list li:hover i {
+	opacity: 1;
 }
 
 .file-list li:first-of-type{

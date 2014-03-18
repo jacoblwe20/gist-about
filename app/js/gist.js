@@ -1,6 +1,7 @@
 var authKey,
-	base = 'https://api.github.com';
-
+	base = 'https://api.github.com',
+	util = require('util'),
+	EventEmitter = require('events').EventEmitter;
 
 // need to sync ids with a database to
 // allow for us to locally keep track of 
@@ -18,12 +19,15 @@ function Gist ( options ) {
 	}
 }
 
+util.inherits( Gist, EventEmitter );
+
 Gist.prototype.create = function ( data, callback ) {
 	var options = {
 		json : data,
 		url : base + '/gists',
 		method : 'post'
 	};
+	this.emit('saving');
 	this.request( options, callback );
 };
 
@@ -33,6 +37,7 @@ Gist.prototype.update = function ( data, callback ) {
 		url : base + '/gists/' + data.id,
 		method : 'patch'
 	};
+	this.emit('saving');
 	this.request( options, callback );
 };
 
@@ -64,7 +69,6 @@ Gist.prototype.request = function ( options, callback ) {
 	options.headers = {
 		'User-Agent' : 'Gist Desktop App'
 	};
-
 	this._request( options, function( err, res, body ) {
 		var resp;
 		if ( err ) return callback ( err );
@@ -108,6 +112,7 @@ Gist.prototype.save = function ( callback, progress ) {
 
 	function done ( err, res ) {
 		if ( err ) return callback ( err );
+		this.emit('saved', res);
 		this.app.currentlyEditing = res.id;
 		this.store( res, callback );
 	}
@@ -119,7 +124,20 @@ Gist.prototype.save = function ( callback, progress ) {
 		payload.id = this.app.currentlyEditing;
 		return this.update( payload, done );
 	}
-	this.create( payload, done )
+	this.create( payload, done );
+};
+
+Gist.prototype.destroy = function ( id, callback ) {
+	var options = {
+		url : base + '/gists/' + id,
+		method : 'delete'
+	},
+	unlink = this.app.fs.unlinkSync( this.gistFolder + '/' + id + '.json');
+	this.request( options, function ( err, res ) {
+		callback( err, res );
+		// check to see if its a really bad error not found is ok.
+		this.emit('destroyed', err, res);
+	}.bind(this));
 };
 
 Gist.prototype.store = function ( obj, callback ) {

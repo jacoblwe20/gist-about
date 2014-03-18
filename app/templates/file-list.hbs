@@ -2,6 +2,8 @@
 <ul class="file-list">
 	<li onclick="app.new()">New File +</li>
 	{{#each files}}
-		<li data-id="{{id}}" onclick="app.open(this)">{{filename}}</li>
+		<li data-id="{{id}}">
+			{{filename}}<i class="icon-cross"></i>
+		</li>
 	{{/each}}
 </ul>

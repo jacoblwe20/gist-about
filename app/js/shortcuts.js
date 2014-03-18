@@ -6,7 +6,10 @@ function Shortcuts ( options ) {
 
 Shortcuts.prototype.register = function( shortcuts ) {
 	for( var key in shortcuts ) {
-		this.MouseTrap.bind(key, this._getMethod( shortcuts[key] ));
+		this.MouseTrap.bind(key, function( fn ){
+			fn();
+			return false;
+		}.bind( this, this._getMethod( shortcuts[key] )));
 	}
 };
 
