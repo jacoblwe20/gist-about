@@ -20,6 +20,7 @@ app.Handlebars = require('handlebars');
 app.closeEl = document.querySelector('.icon-cross');
 app.listEl = document.querySelector('.icon-list');
 app.list = document.querySelector('aside');
+app.nav = document.querySelector('nav');
 app.message = document.querySelector('.message');
 app.content = document.getElementById('editor');
 app.title = document.querySelector('.document-title');
@@ -55,14 +56,18 @@ app.open = function ( e ) {
 		app.title.innerText = file.filename;
 		app.currentlyEditing = id;
 		app.list.classList.remove('show');
+		app.nav.classList.remove('new');
 	}
 };
 
 app.new = function (  ) {
+	app.state.id = null;
+	app.storage.setItem('state', JSON.stringify({}));
 	app.title.innerText = "NEW.md";
 	app.content.innerText = "## Hello World";
 	app.currentlyEditing = null;
 	app.list.classList.remove('show');
+	app.nav.classList.add('new');
 };
 
 app.openMenu = function ( ) {
@@ -106,6 +111,7 @@ app.gist.on('destroyed', function(){
 
 app.gist.on('saved', function(){
 	app.setMessage('Saved');
+	app.nav.classList.remove('new');
 }.bind(this));
 
 app.listenTo('i', 'click', app.list, function( e ){
@@ -125,6 +131,16 @@ app.listenTo('i', 'click', app.list, function( e ){
 			})
 		}
 	}
+});
+
+app.listenTo('label', 'click', app._window.document.body, function( e ){
+	e.stopPropagation();
+	if ( app.public ) {
+		app.public = 0
+		return app.setMessage('Private');
+	}
+	app.public = 1;
+	return app.setMessage('Public');
 });
 
 app.listenTo('li', 'click', app.list, function( e ){
