@@ -1,8 +1,8 @@
 {
   "name": "app",
   "main": "index.html",
-  "scripts" : {
-    "postinstall" : "cd .."
+  "scripts": {
+    "postinstall": "cd .."
   },
   "window": {
     "title": "node-webkit demo",
@@ -23,6 +23,7 @@
     "node-syntaxhighlighter": "~0.8.1",
     "highlight.js": "~8.0.0",
     "handlebars": "~2.0.0-alpha.2",
-    "gaze": "~0.5.1"
+    "gaze": "~0.5.1",
+    "lodash": "~2.4.1"
   }
 }

@@ -3,13 +3,20 @@
 	<img class="user-info-avatar" src="{{avatar_url}}" />
 	<div class="user-info-content">
 		<h5>
-			<a href="{{blog}}">{{name}}</a>
-			<a>Change Key</a>
+			<a>{{name}}</a>
+			<a data-action="changeKey">Change Key</a>
 		</h5>
 	</div>
-{{else}}
-	<h6>Github Personal Key</h6>
-	<input type="text" class="key" />
-	<button>Add+</button>
 {{/if}}
+	{{!-- <div class="user-info-update-key" class="{{#unless name}}show{{/unless}}">
+		<h6>Github Personal Key</h6>
+		<input type="text" class="key" />
+		<button>
+			{{#if name}}
+				Change
+			{{else}}
+				Add
+			{{/if}}
+		</button>
+	</div> --}}
 </div>

@@ -2,7 +2,7 @@ function Editor ( app ) {
 	this.app = app;
 	this.markdown = app.markdown;
 	this._highlight = app.highlighter;
-	this._preview = app._window.document.querySelector('.preview_content');
+	this._preview = app.document.querySelector('.preview_content');
 	this.main = app.content;
 	this.main.addEventListener('keydown', this.handleKeys.bind(this));
 	this._history = [];
@@ -104,5 +104,4 @@ Editor.prototype.undo = function ( ) {
 		// range.collapse( el.firstChild, caretPos + diff );
 	}
 };
-
 module.exports = Editor;

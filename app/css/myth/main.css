@@ -78,9 +78,9 @@ article #editor{
 	width: 50%;
 	padding: 60px 30px 30px;
 	font-size: 18px;
-	font-weight: 700;
 	z-index: 1;
 	float: left;
+	line-height: 30px;
 	max-height: auto;
 	white-space: pre;
 }
@@ -93,4 +93,30 @@ article #editor{
 	background: white;
 	z-index: 4;
 	max-height: 600px;
+}
+
+nav .message {
+	position: absolute;
+	padding: 0;
+	top: 0;
+	padding: 15px 20px;
+	right: 50px;
+	bottom: 0;
+	font-weight: 700;
+	color: white;
+	background: #ddd;
+	overflow: hidden;
+	transform : translate( 100%, 0 );
+	transition: transform .5s ease-in-out, width .2s;
+	z-index: -1;
+}
+
+nav .message.show {
+	transform : translate( 0, 0 );
+}
+
+#message {
+	text-align: center;
+	display: block;
+	width: 100%;
 }

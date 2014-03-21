@@ -1,5 +1,6 @@
 {
 	"File" : [
+		"New Window test",
 		"Save gist.save",
 		"Debugger $window.showDevTools",
 		"Minimize $window.minimize",
