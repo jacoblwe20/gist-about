@@ -1,0 +1,12 @@
+<!doctype html>
+<title>Node Webkit Demo</title>
+<link href="css/main.css" type="text/css" rel="stylesheet" />
+<nav>
+	<h6 id="message"></h6>
+</nav>
+<script>
+	var msg = window.location.hash.replace('#', '');
+		el = document.getElementById('message');
+
+	el.innerText = msg;
+</script>
