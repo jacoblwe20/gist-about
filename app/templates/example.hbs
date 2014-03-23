@@ -1,0 +1,21 @@
+{{! module is the scope of the view and gets its own set of data}}
+{{#module 'user-info'}}
+	<img src={{avatar}}/>
+	<h2>{{name}}</h2>
+	{{! click will add a listener to the dom node and fire handler}}
+	<a {{on 'click' 'toggleChangeKey' }}>Change Key</a>
+	{{! bind will bind a key to a value or innerText }}
+	<div class="user-update-key">
+		<input 
+			type="text" 
+			{{bind 'key'}} 
+			{{on 'click' 'handleClick'}}>
+		<button {{on 'submit submitKey'}}>Update</button>
+	</div>
+{{/module}}
+
+{{#module 'gist-list'}}
+	{{#each gists}}
+		<li {{on 'click open' id=id}}></li>
+	{{/each}}
+{{/module}}
