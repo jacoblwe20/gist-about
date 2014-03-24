@@ -37,10 +37,14 @@ Editor.prototype.closePreview = function( ) {
 };
 
 Editor.prototype.highlight = function( ) {
+	// this can work but it need to create a div under
+	// normal div and update automatically
 	// console.log('something cool');
-	// var contents = this.app.content.innerText,
-	// 	html = this._highlight.highlight( 'markdown', contents ).value;
-	// this.app.content.innerHTML = html;
+	this.highlights = this.highlights || 
+		this.app._window.document.querySelector('.highlight-layer');
+	var contents = this.app.content.innerText,
+		html = this._highlight.highlight( 'markdown', contents ).value;
+	this.highlights.innerHTML = html;
 };
 
 Editor.prototype.handleKeys = function ( e ) {
@@ -54,11 +58,28 @@ Editor.prototype.handleKeys = function ( e ) {
 	if ( keyCode === 9 ) {
 		e.preventDefault();
 		start = this.getCaretPosition( el );
+		console.log( start );
 		el.innerText = value.substring(0, start) + '\t' + value.substring(start);
 		range.collapse( el.firstChild, start + 1 );
 	}
+
+	// add in normal line-break to allow tabing to work 
+	// properly
+
+	if ( keyCode === 13 ) {
+		e.preventDefault();
+		start = this.getCaretPosition( el );
+		console.log( start );
+		el.innerText = value.substring(0, start) + '\n' + value.substring(start);
+		range.collapse( el.firstChild, start + 1 );
+	}
+
 	clearTimeout( this.timer );
+	this.app._.defer( this.highlight.bind( this ) )
 	this.timer = setTimeout(function(){
+		if ( this._history.length > 10 ) {
+			this._history.shift();
+		}
 		this._history.push( el.innerText );
 	}.bind( this ), 1000)
 };
@@ -71,6 +92,7 @@ Editor.prototype.getCaretPosition = function ( editableDiv ) {
 		_document = _window.document;
     if (_window.getSelection) {
         sel = _window.getSelection();
+        debugger;
         if (sel.rangeCount) {
             range = sel.getRangeAt(0);
             if (range.commonAncestorContainer.parentNode == editableDiv) {

@@ -4,6 +4,7 @@ var app = {},
 	user;
 
 // basic ui stuff and attaching window
+app._ = require('lodash');
 app._window = this;
 app.gui = require('nw.gui');
 app.config = require('./config/' + ( process.platform || 'linux') + '.json');
@@ -55,6 +56,8 @@ app.open = function ( e ) {
 		app.title.innerText = file.filename;
 		app.currentlyEditing = id;
 		app.list.classList.remove('show');
+		app.editor.closePreview();
+		app.editor.highlight();
 	}
 };
 
@@ -63,6 +66,7 @@ app.new = function (  ) {
 	app.content.innerText = "## Hello World";
 	app.currentlyEditing = null;
 	app.list.classList.remove('show');
+	app.editor.highlight();
 };
 
 app.openMenu = function ( ) {

@@ -1,7 +1,41 @@
 span[class^="hljs-"]{
-	display: block;
+	display: inline;
 }
 
 .hljs-header {
-	color : tomato;
+	background: #aeefc8;
+}
+
+.hljs-link_label {
+	background: dodgerblue;
+}
+
+.hljs-link_url {
+	background: tomato;
+}
+
+.hljs-code {
+	background: gold;
+}
+
+.hljs-emphasis {
+	background: dodgerblue;
+}
+
+.hljs-strong {
+	background: tomato;	
+}
+
+.preview_content {
+	line-height: 30px;	
+}
+
+pre, code {
+	background: #efefef;
+	padding: 5px;
+	border-radius: 3px;
+}
+
+pre {
+	padding: 5px 15px;
 }

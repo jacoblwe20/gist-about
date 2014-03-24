@@ -1,6 +1,6 @@
 {
-  "name": "node-webkit-hello-world",
-  "version": "0.0.0",
+  "name": "gist-about",
+  "version": "0.0.6",
   "description": "sample app for node webkit",
   "main": "index.js",
   "scripts": {
@@ -12,5 +12,9 @@
   "dependencies": {
     "nodewebkit": "^0.8.5",
     "myth": "~0.3.1"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-node-webkit-builder": "~0.1.18"
   }
 }
