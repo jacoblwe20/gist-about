@@ -117,7 +117,11 @@ article #editor,
   word-wrap: break-word;
   z-index: -1;
   color: rgba(0,0,0,0);
-  opacity: .3;
+  opacity: .25;
+}
+
+.highlight-layer.hide {
+  opacity: 0;
 }
 
 .preview_content {

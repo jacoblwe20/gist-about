@@ -1,5 +1,6 @@
 {
 	"mod+p" : "editor.togglePreview",
+	"mod+h" : "editor.toggleHighlights",
 	"mod+z" : "editor.undo",
 	"mod+s" : "gist.save",
 	"mod+alt+m" : "openMenu"

@@ -15,6 +15,10 @@ Editor.prototype.togglePreview = function ( ) {
 	this.preview();
 };
 
+Editor.prototype.toggleHighlights = function ( ) {
+	this.highlights.classList.toggle('hide');
+};
+
 Editor.prototype.preview = function( ) {
 	var app = this.app,
 	 	el = this._preview,
@@ -53,12 +57,11 @@ Editor.prototype.handleKeys = function ( e ) {
 		start,
 		value = el.innerText,
 		range = this.app._window.getSelection(),
+		start = this.getCaretPosition( el ),
 		end;
 
 	if ( keyCode === 9 ) {
 		e.preventDefault();
-		start = this.getCaretPosition( el );
-		console.log( start );
 		el.innerText = value.substring(0, start) + '\t' + value.substring(start);
 		range.collapse( el.firstChild, start + 1 );
 	}
@@ -68,13 +71,13 @@ Editor.prototype.handleKeys = function ( e ) {
 
 	if ( keyCode === 13 ) {
 		e.preventDefault();
-		start = this.getCaretPosition( el );
-		console.log( start );
 		el.innerText = value.substring(0, start) + '\n' + value.substring(start);
 		range.collapse( el.firstChild, start + 1 );
 	}
 
 	clearTimeout( this.timer );
+	this.app.state.caretPosition = start;
+	this.app.storage.setItem('state', JSON.stringify(this.app.state));
 	this.app._.defer( this.highlight.bind( this ) )
 	this.timer = setTimeout(function(){
 		if ( this._history.length > 10 ) {
@@ -82,6 +85,12 @@ Editor.prototype.handleKeys = function ( e ) {
 		}
 		this._history.push( el.innerText );
 	}.bind( this ), 1000)
+};
+
+Editor.prototype.setCaretPosition = function ( position ) {
+	var el = this.app.content,
+		range = this.app._window.getSelection();
+	range.collapse( el.firstChild, position - 1 );
 };
 
 Editor.prototype.getCaretPosition = function ( editableDiv ) {
@@ -92,7 +101,6 @@ Editor.prototype.getCaretPosition = function ( editableDiv ) {
 		_document = _window.document;
     if (_window.getSelection) {
         sel = _window.getSelection();
-        debugger;
         if (sel.rangeCount) {
             range = sel.getRangeAt(0);
             if (range.commonAncestorContainer.parentNode == editableDiv) {

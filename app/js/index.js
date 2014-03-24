@@ -67,6 +67,8 @@ app.new = function (  ) {
 	app.title.innerText = "NEW.md";
 	app.content.innerText = "## Hello World";
 	app.currentlyEditing = null;
+	app.state.id = null;
+	app.storage.setItem('state', JSON.stringify(app.state));
 	app.list.classList.remove('show');
 	app.nav.classList.add('new');
 	app.editor.highlight();
@@ -166,10 +168,13 @@ app.shortcuts = new (require('./js/shortcuts'))({
 });
 app.shortcuts.register(require('./config/shortcuts.json'));
 
+app.content.focus();
 if ( app.state.id ) {
 	app.open( app.state.id );
 }
-
+if ( app.state.caretPosition ) {
+	app.editor.setCaretPosition( app.state.caretPosition );
+}
 
 app.listEl.addEventListener('click', app.openMenu);
 
