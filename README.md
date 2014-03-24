@@ -1,7 +1,5 @@
 # Gist About
 
-![gist-about](https://github.com/jacoblwe20/gist-about/raw/master/src/assets/imgs/app.png)
-
 ## Installing
 
 Clone this repo and in the root directory run `npm install` to install depedencies. To then startup the app run `npm start` this should open up the window and display a new page for the app.
