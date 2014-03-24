@@ -18,6 +18,7 @@ app.fs = require('fs');
 app.markdown = require('github-flavored-markdown');
 app.highlighter = require('highlight.js');
 app.Handlebars = require('handlebars');
+app.nav = document.querySelector('nav');
 app.closeEl = document.querySelector('.icon-cross');
 app.listEl = document.querySelector('.icon-list');
 app.list = document.querySelector('aside');
@@ -56,6 +57,7 @@ app.open = function ( e ) {
 		app.title.innerText = file.filename;
 		app.currentlyEditing = id;
 		app.list.classList.remove('show');
+		app.nav.classList.remove('new');
 		app.editor.closePreview();
 		app.editor.highlight();
 	}
@@ -66,6 +68,7 @@ app.new = function (  ) {
 	app.content.innerText = "## Hello World";
 	app.currentlyEditing = null;
 	app.list.classList.remove('show');
+	app.nav.classList.add('new');
 	app.editor.highlight();
 };
 
@@ -95,7 +98,8 @@ app.setMessage = function ( msg ) {
 	var classList = app.message.classList;
 	app.message.innerText = msg;
 	classList.add('show');
-	setTimeout(function(){
+	clearTimeout( app._messageTimer );
+	app._messageTimer = setTimeout(function(){
 		classList.remove('show');
 	},3000);
 }
@@ -138,6 +142,16 @@ app.listenTo('li', 'click', app.list, function( e ){
 	if ( id ) {
 		app.open( id );
 	}
+});
+
+app.listenTo('label', 'click', app._window.document.body, function( e ){
+	e.stopPropagation();
+	if ( app.public ) {
+		app.public = 0
+		return app.setMessage('Private');
+	}
+	app.public = 1;
+	return app.setMessage('Public');
 });
 
 // menu system

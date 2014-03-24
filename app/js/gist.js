@@ -107,8 +107,8 @@ Gist.prototype.save = function ( callback, progress ) {
 	payload.files[ fileName ] = {
 		content : content
 	};
-	payload.description = "woot";
-	payload.public = false;
+	payload.description = "";
+	payload.public = this.app.public;
 
 	function done ( err, res ) {
 		if ( err ) return callback ( err );
