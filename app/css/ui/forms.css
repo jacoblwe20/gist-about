@@ -1,0 +1,10 @@
+input[type="text"]{
+	padding: .5em 1em;
+	font-size: 1em;
+	border: 1px solid #efefef;
+}
+
+input[type="text"]:focus{
+	outline: none;
+	border: 1px solid #ddd;
+}
