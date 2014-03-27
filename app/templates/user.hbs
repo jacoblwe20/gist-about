@@ -3,13 +3,14 @@
 	<img class="user-info-avatar" src="{{avatar_url}}" />
 	<div class="user-info-content">
 		<h5>
-			<a href="{{blog}}">{{name}}</a>
-			<a>Change Key</a>
+			<a>{{name}}</a>
+			<a data-action="key">Change Key</a>
 		</h5>
 	</div>
-{{else}}
-	<h6>Github Personal Key</h6>
-	<input type="text" class="key" />
-	<button>Add+</button>
 {{/if}}
+	<div class="user-info-key {{#unless name}}show{{/unless}}">
+		<h4>Github Personal Key</h4>
+		<input type="text" class="key" />
+		<button>Add+</button>
+	</div>
 </div>

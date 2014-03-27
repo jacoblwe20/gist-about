@@ -11,6 +11,8 @@
 @import url('./ui/highlight.css');
 @import url('./ui/list.css');
 @import url('./ui/checkboxs.css');
+@import url('./ui/forms.css');
+@import url('./ui/buttons.css');
 
 * {
 	box-sizing : border-box;

@@ -20,7 +20,7 @@ User.prototype.store = function ( ) {
 
 User.prototype.downloadAvatar = function ( user, callback ) {
 	this.folderExsist();
-	var ext = user.avatar_url.split('.').pop().split(/[#\?\&]/g).shift(),
+	var ext = '.png',
 		fileName =  this.app.dataDir + '/cache/' + user.login + '.' + ext,
 		stream = this.app.request( user.avatar_url )
 			.pipe( this.app.fs.createWriteStream( fileName ) );

@@ -1,7 +1,7 @@
 .user-info {
 	position: relative;
 	padding : 20px 20px 10px;
-	background: #aeefc8;
+	background: #efefef;
 }
 
 .user-info-avatar {
@@ -18,11 +18,24 @@
 	min-height: 50px;
 }
 
-.user-info-content h5{
+.user-info-key {
+	display: none;
+}
+
+.user-info-key.show {
+	display: block;
+}
+
+aside .user-info-key h4 {
+	margin: .3em 0;
+	padding: 0;
+}
+
+.user-info-content h5 {
 	margin: 0;
 }
 
-.user-info-content a{
+.user-info-content a {
 	display: block;
 	margin-bottom: 10px;
 }
@@ -43,6 +56,16 @@ aside h4 {
 	border-bottom: 1px solid #efefef;
 	position: relative;
 	cursor: pointer;
+}
+
+.file-list li.add-new i {
+	transform: rotate(90deg);
+}
+
+.file-list li.no-files {
+	color: #ddd;
+	text-align: center;
+	border-bottom: 0px;
 }
 
 .file-list li i {

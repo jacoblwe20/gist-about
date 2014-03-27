@@ -16,6 +16,10 @@
 
 @import url('./ui/checkboxs.css');
 
+@import url('./ui/forms.css');
+
+@import url('./ui/buttons.css');
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

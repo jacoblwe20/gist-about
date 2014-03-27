@@ -67,7 +67,7 @@ Gist.prototype.request = function ( options, callback ) {
 	}
 
 	options.headers = {
-		'User-Agent' : 'Gist Desktop App'
+		'User-Agent' : 'Gist About App; Node.js'
 	};
 	this._request( options, function( err, res, body ) {
 		var resp;
@@ -153,8 +153,10 @@ Gist.prototype.store = function ( obj, callback ) {
 Gist.prototype.getLocal = function ( id ) { 
 	var fs = this.app.fs;
 	if ( !id ) {
-		var files = fs.readdirSync( this.gistFolder ),
+		var direxsist = fs.existsSync( this.gistFolder ),
+			files = direxsist ? fs.readdirSync( this.gistFolder ) : null,
 			payload = [];
+		if ( !files ) return [];
 		files.forEach(function( filename ){
 			var file;
 			var content = fs.readFileSync( this.gistFolder + '/' + filename ); 
@@ -173,8 +175,11 @@ Gist.prototype.getLocal = function ( id ) {
 		// the on and save actions mark as stale an refresh
 		return payload;
 	}
-	var file = fs.readFileSync( this.gistFolder + '/' + id + '.json' ),
+	var path = this.gistFolder + '/' + id + '.json',
+		exsist = fs.existsSync( path ),
+		file = exsist ? fs.readFileSync( path ) : null,
 		content;
+	if ( !file ) return null;
 	try {
 		content = JSON.parse( file.toString('utf8') );
 	} catch ( e ) { };
@@ -194,4 +199,39 @@ Gist.prototype.folderExsist = function ( ) {
 	return true;
 };
 
-module.exports = Gist;
+function testKey ( key, callback ) {
+	console.log('testing key');
+	var oldKey = authKey;
+	authKey = key;
+	this.user( function ( err, res ) {
+		console.log( err );
+		if ( err ) {
+			authKey = oldKey;
+			return callback( err );
+		}
+		if ( typeof res === 'object' ) {
+			if ( res.message === 'Bad credentials' ) {
+				return callback( new Error( res.message ) );
+			}
+			callback( null, res );
+		}
+	})
+}
+
+Gist.prototype.updateKey = function ( key, callback ) {
+	var auth = JSON.stringify({
+			authToken : key
+		}, null, '\t'),
+		authfile = this.app.dataDir + '/auth.json',
+		test = testKey.bind( this, key );
+	// perform a key test
+	test(function ( err, user ) {
+		if ( err ) return callback( err );
+		this.app.fs.writeFile(authfile , auth, function ( errs, res ) {
+			if ( errs ) return callback( errs );
+			callback( null, user );
+		}.bind( this ));
+	}.bind( this ));
+};
+
+module.exports = Gist; 

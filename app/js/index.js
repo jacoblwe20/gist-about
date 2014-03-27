@@ -59,8 +59,12 @@ app.open = function ( e ) {
 		app.list.classList.remove('show');
 		app.nav.classList.remove('new');
 		app.editor.closePreview();
-		app.editor.highlight();
-	}
+		return app.editor.highlight();
+	} 
+
+	app.state.id = null;
+	app.storage.setItem('state', JSON.stringify(app.state));
+	app.currentlyEditing = null;
 };
 
 app.new = function (  ) {
@@ -75,15 +79,15 @@ app.new = function (  ) {
 };
 
 app.openMenu = function ( ) {
+	var user;
 	app.list.classList.toggle('show');
 	// install handlebars and render a template here with data
 	if ( app.user ) {
-		var user = app.user.get(),
-			html;
-		user.files = app.gist.getLocal();
-		html = app.templates.render('list.hbs', user);
-		app.list.innerHTML = app.templates.render('list.hbs', user);
+		user = app.user.get();
 	}
+	user = user || {};
+	user.files = app.gist.getLocal();
+	app.list.innerHTML = app.templates.render('list.hbs', user);
 };
 
 app.listenTo = function ( selector, _event, el, fn ){
@@ -104,7 +108,14 @@ app.setMessage = function ( msg ) {
 	app._messageTimer = setTimeout(function(){
 		classList.remove('show');
 	},3000);
-}
+};
+
+app.setUser = function ( user ) {
+	app.user = new (require('./js/user'))( {
+		app : app,
+		user : user 
+	});
+};
 
 app.gist.on('saving', function(){
 	app.setMessage('Saving');
@@ -146,6 +157,34 @@ app.listenTo('li', 'click', app.list, function( e ){
 	}
 });
 
+app.listenTo('a', 'click', app.list, function( e ){
+	var el = e.target,
+		action = el.dataset.action;
+
+	if ( action === 'key' ) {
+		app.keyChange = app._window.document.querySelector('.user-info-key');
+		app.keyChange.classList.toggle('show');
+	}
+});
+
+app.listenTo('button', 'click', app.list, function( e ){
+	var el = e.target,
+		key = app._window.document.querySelector('.key').value;
+
+	if ( key.length ) {
+		return app.gist.updateKey(key, function( err, user ) {
+			if ( err ) {
+				return app.setMessage( err.message );
+			}
+			console.log( user );
+			app.list.classList.remove('show');
+			app.setMessage('Updated Key');
+			app.setUser( user );
+		});
+	}
+	app.setMessage('Please Add A Key');
+});
+
 app.listenTo('label', 'click', app._window.document.body, function( e ){
 	e.stopPropagation();
 	if ( app.public ) {
@@ -171,6 +210,8 @@ app.shortcuts.register(require('./config/shortcuts.json'));
 app.content.focus();
 if ( app.state.id ) {
 	app.open( app.state.id );
+} else {
+	app.new();
 }
 if ( app.state.caretPosition ) {
 	app.editor.setCaretPosition( app.state.caretPosition );
