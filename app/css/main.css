@@ -42,7 +42,7 @@
 }
 
 body {
-  background: white;
+  background: #F4F7FC;
   margin: 0;
   padding: 0;
   font-family: 'Andada', sans;
@@ -89,6 +89,10 @@ article {
   transition: transform .5s ease-in-out;
 }
 
+article #editor {
+  color: rgba( 0, 0, 0, .1 );
+}
+
 article.preview {
   -webkit-transform: translate3d( -50%, 0, 0 );
   -ms-transform: translate3d( -50%, 0, 0 );
@@ -121,8 +125,7 @@ article #editor,
   left: 0;
   word-wrap: break-word;
   z-index: -1;
-  color: rgba(0,0,0,0);
-  opacity: .25;
+  color: #444;
 }
 
 .highlight-layer.hide {
@@ -134,7 +137,6 @@ article #editor,
   float: left;
   position: relative;
   padding: 50px 20px;
-  background: white;
   z-index: 4;
   max-height: 600px;
 }
@@ -147,8 +149,7 @@ nav .message {
   right: 50px;
   bottom: 0;
   font-weight: 700;
-  color: white;
-  background: #ddd;
+  background: white;
   overflow: hidden;
   -webkit-transform: translate( 100%, 0 );
   -ms-transform: translate( 100%, 0 );

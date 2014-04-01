@@ -3,27 +3,27 @@ span[class^="hljs-"]{
 }
 
 .hljs-header {
-	background: #aeefc8;
+	color: #BCCCCF;
 }
 
 .hljs-link_label {
-	background: dodgerblue;
+	color: #BCCCCF;
 }
 
 .hljs-link_url {
-	background: tomato;
+	color: #BCCCCF;
 }
 
 .hljs-code {
-	background: gold;
+	color: #BCCCCF;
 }
 
 .hljs-emphasis {
-	background: dodgerblue;
+	color: #BCCCCF;
 }
 
 .hljs-strong {
-	background: tomato;	
+  color: #BCCCCF;
 }
 
 .preview_content {
@@ -31,7 +31,7 @@ span[class^="hljs-"]{
 }
 
 pre, code {
-	background: #efefef;
+	background: #BCCCCF;
 	padding: 5px;
 	border-radius: 3px;
 }
