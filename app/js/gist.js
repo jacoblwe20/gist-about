@@ -21,6 +21,10 @@ function Gist ( options ) {
 
 util.inherits( Gist, EventEmitter );
 
+Gist.prototype.isAuthed = function ( ) {
+  return authKey ? true : false;
+};
+
 Gist.prototype.create = function ( data, callback ) {
 	var options = {
 		json : data,
@@ -145,7 +149,7 @@ Gist.prototype.store = function ( obj, callback ) {
 		json = JSON.stringify( obj, null, '\t' );
 	if ( this.folderExsist() ){
 		fs.writeFile( this.app.dataDir + '/gists/' + obj.id + '.json', json, function ( ) {
-			console.log(arguments);
+			if ( callback ) callback( );
 		});
 	}
 };
@@ -197,6 +201,19 @@ Gist.prototype.folderExsist = function ( ) {
 	}
 	this.app.fs.mkdirSync( this.gistFolder );
 	return true;
+};
+
+Gist.prototype.formatResponse = function ( res ) {
+  var payload = [];
+  res.forEach(function( gist ){
+	  var file;
+		for( var key in gist.files ) {
+			file = gist.files[ key ];
+			file.id = gist.id;
+		}
+		payload.push( file );
+	}.bind( this ));  
+  return payload;
 };
 
 function testKey ( key, callback ) {

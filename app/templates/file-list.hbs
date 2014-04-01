@@ -1,14 +1,24 @@
-<h4>Files</h4>
+<h4>Notes</h4>
 <ul class="file-list">
 	<li onclick="app.new()" class="add-new">
-		New File<i class="icon-cross"></i>
+		New Note
 	</li>
 	{{#each files}}
 		<li data-id="{{id}}">
 			{{filename}}<i class="icon-cross"></i>
 		</li>
 	{{/each}}
-	{{#unless file.length}}
+	{{#unless files.length}}
 		<li class="no-files">No Files Found</li>
 	{{/unless}}
 </ul>
+{{#if remote.length}}
+  <h4>Remote Notes</h4>
+  <ul class="file-list">
+    {{#each remote}}
+      <li data-id="{{id}}">
+			  {{filename}}
+		  </li>
+    {{/each}}
+  </ul>
+{{/if}}

@@ -50,6 +50,7 @@ app.open = function ( e ) {
 		file = app.gist.getLocal( id );
 	}
 
+  var isRemote = app._.findWhere(app._gistCache, { id : '' + id }); 
 	if( file ) {
 		app.state.id = id;
 		app.storage.setItem('state', JSON.stringify(app.state));
@@ -60,8 +61,18 @@ app.open = function ( e ) {
 		app.nav.classList.remove('new');
 		app.editor.closePreview();
 		return app.editor.highlight();
-	} 
+	}
 
+  if ( isRemote ) {
+    app.setMessage('Importing Gist');
+    app.gist.get({ id : id }, function ( err, res ) { 
+      if ( err ) return app.setMessage( err.message );
+      app.gist.store( res, function ( ) { 
+        app.setMessage('Woot');
+        app.open( id ); 
+      }); 
+    });
+  }
 	app.state.id = null;
 	app.storage.setItem('state', JSON.stringify(app.state));
 	app.currentlyEditing = null;
@@ -78,16 +89,49 @@ app.new = function (  ) {
 	app.editor.highlight();
 };
 
+app.getRemoteGists = function ( callback ) {
+  app.gist.get( {}, function ( err, res ) { 
+    if ( err ) return app.setMessage( err.message );
+    var files = app.gist.formatResponse( res );
+    files = files.filter( function ( x ) { 
+      return x ? ( x.language === 'Markdown' ) : null; 
+    });
+    callback( files );
+  });
+};
+
 app.openMenu = function ( ) {
 	var user;
 	app.list.classList.toggle('show');
-	// install handlebars and render a template here with data
-	if ( app.user ) {
-		user = app.user.get();
-	}
-	user = user || {};
-	user.files = app.gist.getLocal();
-	app.list.innerHTML = app.templates.render('list.hbs', user);
+ 
+  // if menu is open get data
+  if ( app.list.classList.contains('show') ) { 
+    if ( app.user ) { 
+		  user = app.user.get();
+    }
+   
+    user = user || {};
+  	user.files = app.gist.getLocal();
+
+    if ( !app._gistCache && app.gist.isAuthed( ) ) {
+      app.list.innerHTML = app.templates.render('list.hbs', user);
+      return app.getRemoteGists( function ( files ) {
+        files = files.filter( function ( file ) {
+          return !(app._.findWhere(user.files, { id : '' + file.id }));
+        });
+        user.remote = files;
+        app._gistCache = files;
+        app.list.innerHTML = app.templates.render('list.hbs', user);
+      });
+    }
+    // restore from cache
+    app._gistCache = app._gistCache.filter( function ( file ) {
+      return !(app._.findWhere(user.files, { id : '' + file.id }));
+    });
+
+    user.remote = app._gistCache;
+    app.list.innerHTML = app.templates.render('list.hbs', user);
+  }
 };
 
 app.listenTo = function ( selector, _event, el, fn ){
@@ -138,7 +182,6 @@ app.listenTo('i', 'click', app.list, function( e ){
 	if ( id ) {
 		if ( confirm('Are you sure you want to delete this note?') ) {
 			app.gist.destroy( id, function(){
-				console.log('removed', arguments );
 				app.openMenu();
 				if( app.currentlyEditing === id ) {
 					app.new();
@@ -176,7 +219,6 @@ app.listenTo('button', 'click', app.list, function( e ){
 			if ( err ) {
 				return app.setMessage( err.message );
 			}
-			console.log( user );
 			app.list.classList.remove('show');
 			app.setMessage('Updated Key');
 			app.setUser( user );

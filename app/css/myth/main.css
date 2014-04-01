@@ -47,6 +47,7 @@ aside {
 	bottom: 0;
 	background: white;
 	z-index: 2;
+  overflow: scroll;
 	transform: translate3d( -100%, 0, 0 );
 	transition: transform .5s ease-in-out, box-shadow .2s;
 	background: white;
