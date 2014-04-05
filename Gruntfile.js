@@ -4,11 +4,11 @@ module.exports = function ( grunt ) {
     nodewebkit: {
       options: {
         build_dir: './builds', 
-        linux32: true,
+        linux64: true,
         app_name : "Gist About",
         app_version : "<% pkg.version %>"
       },
-      src: ['./app'] 
+      src: ['./app/**/*'] 
     }
   });
 

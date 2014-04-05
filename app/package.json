@@ -1,5 +1,6 @@
 {
-  "name": "app",
+  "name": "Gist-About",
+  "version": "0.0.1",
   "main": "index.html",
   "scripts": {
     "postinstall": "cd .."
