@@ -50,7 +50,7 @@ app.open = function ( e ) {
 		file = app.gist.getLocal( id );
 	}
 
-  var isRemote = app._.findWhere(app._gistCache, { id : '' + id }); 
+  var isRemote = app._.findWhere(app._gistCache, { id : '' + id });
 	if( file ) {
 		app.state.id = id;
 		app.storage.setItem('state', JSON.stringify(app.state));
@@ -65,12 +65,12 @@ app.open = function ( e ) {
 
   if ( isRemote ) {
     app.setMessage('Importing Gist');
-    app.gist.get({ id : id }, function ( err, res ) { 
+    app.gist.get({ id : id }, function ( err, res ) {
       if ( err ) return app.setMessage( err.message );
-      app.gist.store( res, function ( ) { 
+      app.gist.store( res, function ( ) {
         app.setMessage('Woot');
-        app.open( id ); 
-      }); 
+        app.open( id );
+      });
     });
   }
 	app.state.id = null;
@@ -90,11 +90,11 @@ app.new = function (  ) {
 };
 
 app.getRemoteGists = function ( callback ) {
-  app.gist.get( {}, function ( err, res ) { 
+  app.gist.get( {}, function ( err, res ) {
     if ( err ) return app.setMessage( err.message );
     var files = app.gist.formatResponse( res );
-    files = files.filter( function ( x ) { 
-      return x ? ( x.language === 'Markdown' ) : null; 
+    files = files.filter( function ( x ) {
+      return x ? ( x.language === 'Markdown' ) : null;
     });
     callback( files );
   });
@@ -103,15 +103,17 @@ app.getRemoteGists = function ( callback ) {
 app.openMenu = function ( ) {
 	var user;
 	app.list.classList.toggle('show');
- 
+
   // if menu is open get data
-  if ( app.list.classList.contains('show') ) { 
-    if ( app.user ) { 
+  if ( app.list.classList.contains('show') ) {
+    if ( app.user ) {
 		  user = app.user.get();
     }
-   
+
     user = user || {};
   	user.files = app.gist.getLocal();
+		app.list.innerHTML = app.templates.render('list.hbs', user);
+
 
     if ( !app._gistCache && app.gist.isAuthed( ) ) {
       app.list.innerHTML = app.templates.render('list.hbs', user);
@@ -124,13 +126,16 @@ app.openMenu = function ( ) {
         app.list.innerHTML = app.templates.render('list.hbs', user);
       });
     }
-    // restore from cache
-    app._gistCache = app._gistCache.filter( function ( file ) {
-      return !(app._.findWhere(user.files, { id : '' + file.id }));
-    });
 
-    user.remote = app._gistCache;
-    app.list.innerHTML = app.templates.render('list.hbs', user);
+		if ( app._gistCache ) {
+	    // restore from cache
+    	app._gistCache = app._gistCache.filter( function ( file ) {
+      	return !(app._.findWhere(user.files, { id : '' + file.id }));
+    	});
+
+    	user.remote = app._gistCache;
+    	app.list.innerHTML = app.templates.render('list.hbs', user);
+		}
   }
 };
 
@@ -157,7 +162,7 @@ app.setMessage = function ( msg ) {
 app.setUser = function ( user ) {
 	app.user = new (require('./js/user'))( {
 		app : app,
-		user : user 
+		user : user
 	});
 };
 
@@ -276,13 +281,13 @@ if ( user ) {
 		if ( err ) return;
 		app.user = new (require('./js/user'))( {
 			app : app,
-			user : res 
+			user : res
 		});
 	});
 }
 
 // this needs to be conditional
-var Gaze = require('gaze').Gaze; 
+var Gaze = require('gaze').Gaze;
 var gaze = new Gaze('**/*');
 
 gaze.on('all', function(event, filepath) {
