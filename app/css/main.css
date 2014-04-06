@@ -116,16 +116,16 @@ article #editor,
   float: left;
   line-height: 30px;
   max-height: auto;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 .highlight-layer {
   position: absolute;
   top: 0;
   left: 0;
-  word-wrap: break-word;
   z-index: -1;
   color: #444;
+  white-space: pre-wrap;
 }
 
 .highlight-layer.hide {

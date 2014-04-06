@@ -1,7 +1,7 @@
 {
-  "name": "gist-about",
+  "name": "Pastila",
   "version": "0.0.6",
-  "description": "sample app for node webkit",
+  "description": "Simple markdown editor, that syncs with gist",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
