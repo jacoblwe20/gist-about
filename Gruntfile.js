@@ -4,7 +4,7 @@ module.exports = function ( grunt ) {
     nodewebkit: {
       options: {
         build_dir: './builds', 
-        linux64: true,
+        linux64: false,
         app_name : "Gist About",
         app_version : "<% pkg.version %>"
       },
