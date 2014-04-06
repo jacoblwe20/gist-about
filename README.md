@@ -1,4 +1,4 @@
-# Gist About
+# Pastila
 
 ## Installing
 
@@ -22,9 +22,9 @@ you will need to create a file called `auth.json` in you user aplication storage
 
 ```
 # linux
-cd ~/.gist-about
+cd ~/.pastila
 # mac
-cd ~/Library/Application Support/.gist-about
+cd ~/Library/Application Support/.pastila
 ```
 
 in that file youll need to put a github personal access token

@@ -30,7 +30,7 @@ app.editor = new ( require('./js/editor') )( app );
 app.templates = new ( require('./js/templates') )({ app : app })
 app.templates.registerHelpers( require('./js/helpers') );
 // configure
-var userDataPath = app.homeDir + app.config.userData + '.gist-about',
+var userDataPath = app.homeDir + app.config.userData + '.pastila',
 	userDataFolder = app.fs.existsSync( userDataPath );
 if ( !userDataFolder ) {
 	app.fs.mkdir( userDataPath );
