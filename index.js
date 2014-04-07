@@ -1,13 +1,16 @@
-var spawn = require('child_process').spawn;
-	nodewebkit = spawn('node_modules/.bin/nodewebkit', ['app']),
-  grunt = spawn('grunt');
+var spawn = require('child_process').spawn,
+  cmds = [
+    ['node_modules/.bin/nodewebkit', ['app']],
+    ['grunt']
+  ];
 
-nodewebkit.on('end', function(){
-	throw "Node Webkit Exitted";	
-});
+function startProcess ( args, index ) {
+  var cmd = spawn.apply( null, args );
+  cmd.stdout.pipe( process.stdout );
+  cmd.stderr.pipe( process.stdout );
+  cmd.on('close', function(){
+    process.exit();
+  });
+}
 
-// let node webkit be vocal
-nodewebkit.stdout.pipe( process.stdout );
-nodewebkit.stderr.pipe( process.stdout );
-grunt.stdout.pipe( process.stdout );
-grunt.stderr.pipe( process.stdout );
+cmds.forEach( startProcess )
