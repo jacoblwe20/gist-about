@@ -1,0 +1,51 @@
+nav 
+	position fixed
+	top 0
+	left 0
+	right 0
+	z-index 3
+	max-height 50px
+	-webkit-app-region drag
+	background backgroundColor
+
+	i,
+	h6 
+		padding 13px
+		text-align center
+		margin 0
+		float left
+
+	i 
+		cursor pointer
+		width 50px
+		height 50px
+		color accentText
+		font-size 25px
+		user-select none
+		-webkit-app-region no-drag
+		text-shadow  0px 1px 0px white
+
+	h6 
+		font-size 15px
+		padding-top 17px
+		-webkit-app-region no-drag
+
+	&::after 
+		clear both
+		display block
+		content ""
+
+	.close-button 
+		float right
+		z-index 2
+		background backgroundColor
+
+	label.switch-label 
+		float left
+		font-size 6px
+		-webkit-app-region no-drag
+		margin 17px 10px
+		display none
+
+	&.new label.switch-label 
+		display block

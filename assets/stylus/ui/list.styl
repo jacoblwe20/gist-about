@@ -1,0 +1,109 @@
+
+aside 
+  width  80%
+  position fixed
+  top 0
+  left 0
+  bottom 0
+  background white
+  z-index 2
+  overflow scroll
+  transform translate3d( -100%, 0, 0 )
+  transition transform .5s, box-shadow .2s
+  background white
+  padding  50px 0
+  box-shadow 0 0 0px lightGrey
+
+  &.show 
+    transform translate3d( 0, 0, 0 )
+    box-shadow 0 0 200px backgroundColor
+
+
+	.user-info 
+		position relative
+		padding 20px 20px 10px
+		background accentText
+
+		[data-action="key"] 
+			color backgroundColor
+			text-decoration underline
+			cursor pointer
+
+
+	.user-info-avatar 
+		position absolute
+		top 20px
+		left 20px
+		height 50px
+		border-radius 50%
+
+
+	.user-info-content 
+		position relative
+		margin-left 70px
+		min-height 50px
+
+
+	.user-info-key 
+		display none
+
+
+	.user-info-key.show 
+		display block
+
+
+	.user-info-key h4 
+		margin .3em 0
+		padding 0
+		color darkGrey
+
+
+	.user-info-content h5 
+		margin 0
+
+
+	.user-info-content a 
+		display block
+		margin-bottom 10px
+
+
+	h4 
+		padding  0 20px
+		color accentText
+
+
+	.file-list 
+		margin 0
+		padding 0
+		list-style-type none
+
+
+	.file-list li
+		margin 0
+		padding 10px 35px 10px 20px
+		border-bottom 1px solid backgroundColor
+		position relative
+		cursor pointer
+
+
+	.file-list li.add-new i 
+		transform rotate(90deg)
+
+
+	.file-list li.no-files 
+		color #ddd
+		text-align center
+		border-bottom 0px
+
+
+	.file-list li i 
+		position absolute
+		float right
+		top 11px
+		right 10px
+		color accentText
+
+
+	.file-list lifirst-of-type
+		border-top 1px solid backgroundColor
+

@@ -1,0 +1,104 @@
+@import 'nib'
+@import './icons'
+@import './fonts'
+// ui kit
+@import './ui/colors'
+@import './ui/navigation'
+@import './ui/scrollbar'
+@import './ui/highlight'
+@import './ui/list'
+@import './ui/checkboxs'
+@import './ui/forms'
+@import './ui/button'
+
+* 
+  box-sizing border-box
+ -webkit-font-smoothing subpixel-antialiased
+
+::selection 
+    background-color accentText
+    color white
+
+
+[contenteditable] 
+  outline none
+
+
+body
+  background backgroundColor
+  margin 0
+  padding 0
+  font-family 'Andada' sans
+  color darkGrey 
+  position relative
+  overflow-x hidden
+  overflow-y scroll
+  
+article 
+  width 200%
+  transform translate3d( 0, 0, 0 )
+  transition transform .5s ease-in-out
+
+  #editor 
+    color  rgba( 0, 0, 0, .2 )
+
+  &.preview
+    transform translate3d( -50%, 0, 0 )
+    #editor 
+      max-height  600px
+
+    .preview_content 
+      max-height  auto
+
+article #editor,
+.highlight-layer 
+  width 50%
+  padding 60px 30px 30px
+  font-size 18px
+  z-index 1
+  float left
+  line-height 30px
+  max-height auto
+  white-space pre-wrap
+
+.highlight-layer 
+  position absolute
+  top 0
+  left 0
+  z-index -1
+  color darkGrey
+  white-space pre-wrap
+
+.highlight-layer.hide 
+  opacity 0
+
+.preview_content 
+  width 50%
+  float left
+  position relative
+  padding 50px 20px
+  z-index 4
+  max-height 600px
+
+nav 
+  .message 
+    position absolute
+    padding 0
+    top 0
+    padding 15px 20px
+    right 50px
+    bottom 0
+    font-weight 700
+    background white
+    color accentText
+    overflow hidden
+    transform  translate( 100%, 0 )
+    transition transform .5s ease-in-out, width .2s
+    z-index -1
+    &.show 
+      transform  translate( 0, 0 )
+
+#message 
+  text-align center
+  display block
+  width 100%
