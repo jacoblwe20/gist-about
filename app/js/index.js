@@ -21,6 +21,7 @@ app.Handlebars = require('handlebars');
 app.nav = document.querySelector('nav');
 app.closeEl = document.querySelector('.icon-cross');
 app.listEl = document.querySelector('.icon-list');
+app.backEl = document.querySelector('.icon-arrow-left');
 app.list = document.querySelector('aside');
 app.message = document.querySelector('.message');
 app.content = document.getElementById('editor');
@@ -57,9 +58,11 @@ app.open = function ( e ) {
 		app.content.innerText = file.content;
 		app.title.innerText = file.filename;
 		app.currentlyEditing = id;
-		app.list.classList.remove('show');
 		app.nav.classList.remove('new');
 		app.editor.closePreview();
+    if ( app.list.classList.contains('show') ) {
+     app.openMenu( );
+    }
 		return app.editor.highlight();
 	}
 
@@ -84,9 +87,11 @@ app.new = function (  ) {
 	app.currentlyEditing = null;
 	app.state.id = null;
 	app.storage.setItem('state', JSON.stringify(app.state));
-	app.list.classList.remove('show');
-	app.nav.classList.add('new');
-	app.editor.highlight();
+  app.nav.classList.add('new');
+  app.editor.highlight();
+  if ( app.list.classList.contains('show') ) {
+	 app.openMenu( );
+  }
 };
 
 app.getRemoteGists = function ( callback ) {
@@ -101,7 +106,9 @@ app.getRemoteGists = function ( callback ) {
 };
 
 app.openMenu = function ( ) {
-	var user;
+	var user,
+      backEl,
+      iconClass = app.listEl.classList;
 	app.list.classList.toggle('show');
 
   // if menu is open get data
@@ -109,11 +116,12 @@ app.openMenu = function ( ) {
     if ( app.user ) {
 		  user = app.user.get();
     }
-
     user = user || {};
-  	user.files = app.gist.getLocal();
-		app.list.innerHTML = app.templates.render('list.hbs', user);
-
+    user.files = app.gist.getLocal();
+    user.currentId = app.currentlyEditing;
+    app.list.innerHTML = app.templates.render('list.hbs', user);
+    iconClass.remove('icon-list');
+    iconClass.add('icon-arrow-left');
 
     if ( !app._gistCache && app.gist.isAuthed( ) ) {
       app.list.innerHTML = app.templates.render('list.hbs', user);
@@ -127,26 +135,29 @@ app.openMenu = function ( ) {
       });
     }
 
-		if ( app._gistCache ) {
-	    // restore from cache
-    	app._gistCache = app._gistCache.filter( function ( file ) {
-      	return !(app._.findWhere(user.files, { id : '' + file.id }));
-    	});
+    if ( app._gistCache ) {
+      // restore from cache
+      app._gistCache = app._gistCache.filter( function ( file ) {
+        return !(app._.findWhere(user.files, { id : '' + file.id }));
+      });
 
-    	user.remote = app._gistCache;
-    	app.list.innerHTML = app.templates.render('list.hbs', user);
-		}
+      user.remote = app._gistCache;
+      app.list.innerHTML = app.templates.render('list.hbs', user);
+    }
+    return;
   }
+  iconClass.add('icon-list');
+  iconClass.remove('icon-arrow-left');
 };
 
 app.listenTo = function ( selector, _event, el, fn ){
-	el.addEventListener( _event, function ( e ) {
-		var target = e.target;
-		// right now only supports tagName
-		if ( target.tagName.toLowerCase() === selector ) {
-			fn( e );
-		}
-	}, false);
+  el.addEventListener( _event, function ( e ) {
+    var target = e.target;
+    // right now only supports tagName
+    if ( target.tagName.toLowerCase() === selector ) {
+      fn( e );
+    }
+  }, false);
 };
 
 app.setMessage = function ( msg ) {

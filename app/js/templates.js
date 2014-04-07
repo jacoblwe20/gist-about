@@ -35,12 +35,18 @@ Templates.prototype.render = function ( name, data, callback ) {
 };
 
 Templates.prototype.registerHelpers = function ( helpers ) {
-	var _this = this;
 	for( var key in helpers ) {
-		this.Handlebars.registerHelper( key, function(){
-			this.app = _this.app;
-			return helpers[ key ].apply( this, arguments ); 
-		});
+		var fn = helpers[key];
+		this.registerHelper( key, fn );
 	}
 };
+
+Templates.prototype.registerHelper = function ( key, fn ) {
+	var _this = this;
+	this.Handlebars.registerHelper( key, function(){
+		this.app = _this.app;
+		return fn.apply( this, arguments ); 
+	});
+};
+
 module.exports = Templates;

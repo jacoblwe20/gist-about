@@ -16,94 +16,104 @@ aside
 
   &.show 
     transform translate3d( 0, 0, 0 )
-    box-shadow 0 0 200px backgroundColor
+    box-shadow 1px 1px 6px rgba(backgroundColor, .6)
 
 
-	.user-info 
-		position relative
-		padding 20px 20px 10px
-		background accentText
+  .user-info 
+    position relative
+    padding 20px 20px 10px
+    background accentText
+    // box-shadow inset 1px 1px 1px rgba(darkGrey, .3)
 
-		[data-action="key"] 
-			color backgroundColor
-			text-decoration underline
-			cursor pointer
-
-
-	.user-info-avatar 
-		position absolute
-		top 20px
-		left 20px
-		height 50px
-		border-radius 50%
+    [data-action="key"] 
+      color backgroundColor
+      text-decoration underline
+      cursor pointer
 
 
-	.user-info-content 
-		position relative
-		margin-left 70px
-		min-height 50px
+  .user-info-avatar 
+    position absolute
+    top 20px
+    left 20px
+    height 50px
+    border-radius 50%
 
 
-	.user-info-key 
-		display none
+  .user-info-content 
+    position relative
+    margin-left 70px
+    min-height 50px
 
 
-	.user-info-key.show 
-		display block
+  .user-info-key 
+    display none
 
 
-	.user-info-key h4 
-		margin .3em 0
-		padding 0
-		color darkGrey
+  .user-info-key.show 
+    display block
 
 
-	.user-info-content h5 
-		margin 0
+  .user-info-key h4 
+    margin .3em 0
+    padding 0
+    color darkGrey
 
 
-	.user-info-content a 
-		display block
-		margin-bottom 10px
+  .user-info-content h5 
+    margin 0
 
 
-	h4 
-		padding  0 20px
-		color accentText
+  .user-info-content a 
+    display block
+    margin-bottom 10px
 
 
-	.file-list 
-		margin 0
-		padding 0
-		list-style-type none
+  h4 
+    padding  0 20px
+    color accentText
 
 
-	.file-list li
-		margin 0
-		padding 10px 35px 10px 20px
-		border-bottom 1px solid backgroundColor
-		position relative
-		cursor pointer
+  .file-list 
+    margin 0
+    padding 0
+    list-style-type none
 
 
-	.file-list li.add-new i 
-		transform rotate(90deg)
+  .file-list li
+    margin 0
+    padding 10px 35px 10px 20px
+    border-bottom 1px solid backgroundColor
+    position relative
+    cursor pointer
+    &:hover 
+      background backgroundColor
+    &:active
+      background accentText
+    &.current 
+      background accentText
+      color backgroundColor
+      i 
+        color backgroundColor
 
 
-	.file-list li.no-files 
-		color #ddd
-		text-align center
-		border-bottom 0px
+  .file-list li.add-new i 
+    transform rotate(90deg)
 
 
-	.file-list li i 
-		position absolute
-		float right
-		top 11px
-		right 10px
-		color accentText
+  .file-list li.no-files 
+    color #ddd
+    text-align center
+    border-bottom 0px
 
 
-	.file-list lifirst-of-type
-		border-top 1px solid backgroundColor
+  .file-list li i 
+    position absolute
+    float right
+    top 11px
+    right 10px
+    color accentText
+
+
+  .file-list li:first-of-type
+    border-top 1px solid backgroundColor
 
