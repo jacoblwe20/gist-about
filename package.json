@@ -1,6 +1,6 @@
 {
   "name": "Pastila",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Simple markdown editor, that syncs with gist",
   "main": "index.js",
   "scripts": {
@@ -11,10 +11,13 @@
   "license": "MIT",
   "dependencies": {
     "nodewebkit": "^0.8.5",
-    "myth": "~0.3.1"
+    "stylus": "~0.43.0",
+    "nib": "~1.0.2"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
-    "grunt-node-webkit-builder": "~0.1.18"
+    "grunt-node-webkit-builder": "~0.1.18",
+    "grunt-contrib-stylus": "~0.13.2",
+    "grunt-contrib-watch": "~0.6.1"
   }
 }
