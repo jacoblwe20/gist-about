@@ -1,4 +1,7 @@
+<img src="https://raw.githubusercontent.com/jacoblwe20/pastila/master/app/icons/logo.png" width="100" height="100" >
 # Pastila
+
+Pastila is a small app that edits Markdown files and then syncs them up with Github accounts.
 
 ## Installing
 
